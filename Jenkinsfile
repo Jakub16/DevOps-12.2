@@ -27,21 +27,6 @@ pipeline {
             }
         }
 
-        stage('Coverage') {
-            steps {
-                sh '''
-                cd build
-                gcov main.cpp
-                gcovr -r . --xml -o coverage.xml
-                '''
-            }
-            post {
-                always {
-                    cobertura coberturaReportFile: '**/coverage.xml'
-                }
-            }
-        }
-
         stage('Static Analysis') {
             steps {
                 sh '''
