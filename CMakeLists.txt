@@ -2,16 +2,20 @@ cmake_minimum_required(VERSION 3.10)
 
 project(MyApp)
 
-set(SOURCE_FILES src/main.cpp)
-
-add_executable(myapp ${SOURCE_FILES})
+# Ustawienie standardu C++
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-set(TEST_SOURCE_FILES tests/test.cpp)
-add_executable(runTests ${TEST_SOURCE_FILES})
-target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
+add_library(sum_lib src/sum.cpp)
+target_include_directories(sum_lib PUBLIC include)
 
-add_test(NAME runTests COMMAND runTests)
+add_executable(main src/main.cpp)
+target_link_libraries(main sum_lib)
+
+add_executable(test tests/test.cpp)
+target_link_libraries(test GTest::GTest GTest::Main sum_lib)
+add_test(NAME test COMMAND test)

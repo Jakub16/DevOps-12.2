@@ -22,7 +22,7 @@ pipeline {
             steps {
                 sh '''
                 cd build
-                make runTests
+                make test
                 '''
             }
         }

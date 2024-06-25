@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-
-int sum(int a, int b);
+#include "sum.h"
 
 TEST(SumTest, PositiveNumbers) {
     EXPECT_EQ(sum(1, 2), 3);
