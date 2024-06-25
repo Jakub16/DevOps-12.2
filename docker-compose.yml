@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_volume:/var/jenkins_home
+    networks:
+      - my-network
+
+  sonarqube:
+    image: sonarqube
+    environment:
+      SONARQUBE_JDBC_URL: jdbc:postgresql://db:5432/sonarqube
+      SONARQUBE_JDBC_USERNAME: sonarqube
+      SONARQUBE_JDBC_PASSWORD: sonarqube
+    ports:
+      - "9000:9000"
+    depends_on:
+      - database
+    networks:
+      - my-network
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: sonarqube
+      POSTGRES_USER: sonarqube
+      POSTGRES_PASSWORD: sonarqube
+    volumes:
+      - postgres_volume:/var/lib/postgresql
+    networks:
+      - my-network
+
+networks:
+  my-network:
+
+volumes:
+  jenkins_volume:
+  postgres_volume:
